@@ -295,8 +295,13 @@ func (s SelectMenu) MarshalJSON() ([]byte, error) {
 
 // TextInput represents text input component.
 type TextInput struct {
-	CustomID    string         `json:"custom_id"`
-	Label       string         `json:"label"`
+	CustomID string `json:"custom_id"`
+	// Label is only sent when the Text Input is used standalone inside an ActionsRow (the pre-Label
+	// modal format). When a Label component wraps this Text Input instead, the label lives on the
+	// wrapper and this field must be omitted -- Discord rejects a modal where the nested component
+	// still carries its own "label" -- hence omitempty here even though every other field on this
+	// struct is sent as-is.
+	Label       string         `json:"label,omitempty"`
 	Style       TextInputStyle `json:"style"`
 	Placeholder string         `json:"placeholder,omitempty"`
 	Value       string         `json:"value,omitempty"`
